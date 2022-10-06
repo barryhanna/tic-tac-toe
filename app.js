@@ -5,20 +5,32 @@ const Player = function (name, mark) {
   this.mark = mark;
 };
 
-const Gameboard = function () {
-  const board = [
-    ['X', 'X', 'X'],
-    ['X', 'X', 'X'],
-    ['X', 'X', 'X'],
-  ];
-};
+class Gameboard {
+  constructor() {
+    this.board = [
+      new Array(3).fill('X'),
+      new Array(3).fill('O'),
+      new Array(3).fill('X'),
+    ];
+  }
 
-function populateBoard() {
-  // squares.forEach(square, index => )
+  render(elemSelector) {
+    // this.boardContainer = document.querySelector(elemSelector);
+  }
+
+  makeMove(player, square) {
+    this.board[square.row][square.column] = player.mark;
+  }
+
+  printBoard() {
+    for (var i = 0; i < this.board.length; i++) {
+      for (var j = 0; j < this.board[i].length; j++) {
+        console.log(`${this.board[i][j]}`);
+      }
+    }
+  }
 }
 
-function render() {
-  const boardContainer = document.querySelector('.board-container');
-}
-
-render();
+const board = new Gameboard();
+board.render(document.querySelector('[data-square]'));
+console.log();

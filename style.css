@@ -3,6 +3,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  outline: 1px solid crimson;
 }
 
 /* Remove default margin */
@@ -19,6 +20,9 @@ dd {
   margin: 0;
 }
 
+h1 {
+  text-align: center;
+}
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
 ul[role='list'],
 ol[role='list'] {
@@ -32,12 +36,12 @@ html:focus-within {
 
 /* Set core body defaults */
 body {
+  display: grid;
+  place-content: center;
+  font-family: 'Karla', sans-serif;
   min-height: 100vh;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
-    helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial,
-    sans-serif;
 }
 
 /* A elements that don't have a class get default styles */
