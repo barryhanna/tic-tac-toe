@@ -1,3 +1,13 @@
+const TOP_LEFT = 0;
+const TOP_MIDDLE = 1;
+const TOP_RIGHT = 2;
+const MIDDLE_LEFT = 3;
+const MIDDLE_MIDDLE = 4;
+const MIDDLE_RIGHT = 5;
+const BOTTOM_LEFT = 6;
+const BOTTOM_MIDDLE = 7;
+const BOTTOM_RIGHT = 8;
+
 const squares = document.querySelectorAll('[data-square]');
 
 const handleClick = (e) => {
@@ -24,29 +34,61 @@ const Gameboard = function () {
     board[square] = player.mark;
   }
 
-  function checkWin() {
-    if ((board[0] === board[1]) === board[2]) {
+  function checkWin(mark) {
+    if (
+      board[TOP_LEFT] === board[TOP_MIDDLE] &&
+      board[TOP_MIDDLE] === board[TOP_RIGHT] &&
+      board[TOP_RIGHT] === mark
+    ) {
       return true;
     }
-    if ((board[3] === board[4]) === board[5]) {
+    if (
+      board[MIDDLE_LEFT] === board[MIDDLE_MIDDLE] &&
+      board[MIDDLE_MIDDLE] === board[MIDDLE_RIGHT] &&
+      board[MIDDLE_RIGHT] === mark
+    ) {
       return true;
     }
-    if ((board[6] === board[7]) === board[8]) {
+    if (
+      board[BOTTOM_LEFT] === board[BOTTOM_MIDDLE] &&
+      board[BOTTOM_MIDDLE] === board[BOTTOM_RIGHT] &&
+      board[BOTTOM_RIGHT] === mark
+    ) {
       return true;
     }
-    if ((board[0] === board[3]) === board[6]) {
+    if (
+      board[TOP_LEFT] === board[MIDDLE_LEFT] &&
+      board[MIDDLE_LEFT] === board[BOTTOM_LEFT] &&
+      board[BOTTOM_LEFT] === mark
+    ) {
       return true;
     }
-    if ((board[1] === board[4]) === board[7]) {
+    if (
+      board[TOP_MIDDLE] === board[MIDDLE_MIDDLE] &&
+      board[MIDDLE_MIDDLE] === board[BOTTOM_MIDDLE] &&
+      board[BOTTOM_MIDDLE] === mark
+    ) {
       return true;
     }
-    if ((board[2] === board[5]) === board[8]) {
+    if (
+      board[TOP_RIGHT] === board[MIDDLE_RIGHT] &&
+      board[MIDDLE_RIGHT] === board[BOTTOM_RIGHT] &&
+      board[BOTTOM_RIGHT] === mark
+    ) {
       return true;
     }
-    if ((board[0] === board[4]) === board[8]) {
+    if (
+      board[TOP_LEFT] === board[MIDDLE_MIDDLE] &&
+      board[MIDDLE_MIDDLE] === board[BOTTOM_RIGHT] &&
+      board[BOTTOM_RIGHT] === mark
+    ) {
       return true;
     }
-    if ((board[2] === board[4]) === board[6]) {
+    if (
+      board[TOP_RIGHT] === board[MIDDLE_MIDDLE] &&
+      board[MIDDLE_MIDDLE] === board[BOTTOM_LEFT] &&
+      board[BOTTOM_LEFT] === mark
+    ) {
       return true;
     }
     return false;
@@ -54,7 +96,7 @@ const Gameboard = function () {
 
   function clear() {
     for (var i = 0; i < squares.length; i++) {
-      board[i] = '';
+      board[i] = undefined;
     }
   }
 
@@ -66,16 +108,43 @@ const Gameboard = function () {
   return { render, clear, makeMove, checkWin, printBoard };
 };
 
-const board = Gameboard();
-board.render();
-const player1 = new Player('Bob', 'X');
-const player2 = new Player('Alice', 'O');
-board.makeMove(player1, 0);
-board.render();
-board.makeMove(player2, 8);
-board.render();
-board.makeMove(player2, 7);
-board.render();
-board.makeMove(player2, 6);
-board.render();
-board.checkWin();
+// board.render();
+// const player1 = new Player('Bob', 'X');
+// const player2 = new Player('Alice', 'O');
+// board.makeMove(player1, 0);
+// board.makeMove(player1, 1);
+// board.makeMove(player1, 2);
+// board.render();
+// board.makeMove(player2, 8);
+// board.render();
+// board.makeMove(player2, 7);
+// board.render();
+// board.makeMove(player2, 6);
+// board.render();
+// board.checkWin();
+
+const GameController = function () {
+  const board = Gameboard();
+  let gameOver = false;
+
+  const player1Name =
+    document.querySelector('.player-one-name').value === ''
+      ? 'Player 1 (X)'
+      : document.querySelector('.player-one-name').value;
+  const player2Name =
+    document.querySelector('.player-two-name').value === ''
+      ? 'Player 2 (O)'
+      : document.querySelector('.player-two-name').value;
+
+  function start() {
+    console.log(`Player 1: ${player1Name}`);
+    console.log(`Player 2: ${player2Name}`);
+  }
+
+  return {
+    start,
+  };
+};
+
+// const game = GameController();
+// game.start();

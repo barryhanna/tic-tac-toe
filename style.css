@@ -80,6 +80,15 @@ select {
   }
 }
 
+.player-names-panel {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.board-container {
+  margin-inline: auto;
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(3, 100px);
