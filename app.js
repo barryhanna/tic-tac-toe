@@ -11,22 +11,20 @@ const Player = function (name, mark) {
   this.mark = mark;
 };
 
-class Gameboard {
-  constructor() {
-    this.board = new Array(9);
-  }
+const Gameboard = function () {
+  const board = new Array(9);
 
-  render() {
+  function render() {
     for (var i = 0; i < squares.length; i++) {
-      squares[i].textContent = this.board[i];
+      squares[i].textContent = board[i];
     }
   }
 
-  makeMove(player, square) {
-    this.board[square] = player.mark;
+  function makeMove(player, square) {
+    board[square] = player.mark;
   }
 
-  checkWin() {
+  function checkWin() {
     if ((board[0] === board[1]) === board[2]) {
       return true;
     }
@@ -54,20 +52,21 @@ class Gameboard {
     return false;
   }
 
-  clear() {
+  function clear() {
     for (var i = 0; i < squares.length; i++) {
-      this.board[i] = '';
+      board[i] = '';
     }
   }
 
-  printBoard() {
-    for (var i = 0; i < this.board.length; i++) {
-      console.log(`\t${this.board[i]}`);
+  function printBoard() {
+    for (var i = 0; i < board.length; i++) {
+      console.log(`\t${board[i]}`);
     }
   }
-}
+  return { render, clear, makeMove, checkWin, printBoard };
+};
 
-const board = new Gameboard();
+const board = Gameboard();
 board.render();
 const player1 = new Player('Bob', 'X');
 const player2 = new Player('Alice', 'O');

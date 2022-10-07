@@ -3,7 +3,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  outline: 1px solid crimson;
+  outline: 1px solid;
 }
 
 /* Remove default margin */
