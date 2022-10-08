@@ -8,14 +8,6 @@ const BOTTOM_LEFT = 6;
 const BOTTOM_MIDDLE = 7;
 const BOTTOM_RIGHT = 8;
 
-const squares = document.querySelectorAll('[data-square]');
-
-const handleClick = (e) => {
-  console.log(e.target.dataset.square);
-};
-
-document.querySelector('.board').addEventListener('click', handleClick);
-
 const Player = function (name, mark) {
   this.name = name;
   this.mark = mark;
@@ -24,14 +16,13 @@ const Player = function (name, mark) {
 const Gameboard = function () {
   const board = new Array(9);
 
-  function render() {
-    for (var i = 0; i < squares.length; i++) {
-      squares[i].textContent = board[i];
-    }
-  }
-
   function makeMove(player, square) {
-    board[square] = player.mark;
+    if (board[square] === 'X' || board[square] === 'O') {
+      console.log('Square already taken');
+      return;
+    }
+    board[parseInt(square)] = player.mark;
+    console.log(`${square} with ${player.mark}`);
   }
 
   function checkWin(mark) {
@@ -105,40 +96,71 @@ const Gameboard = function () {
       console.log(`\t${board[i]}`);
     }
   }
-  return { render, clear, makeMove, checkWin, printBoard };
+  return { clear, makeMove, checkWin, printBoard };
 };
 
-// board.render();
-// const player1 = new Player('Bob', 'X');
-// const player2 = new Player('Alice', 'O');
-// board.makeMove(player1, 0);
-// board.makeMove(player1, 1);
-// board.makeMove(player1, 2);
-// board.render();
-// board.makeMove(player2, 8);
-// board.render();
-// board.makeMove(player2, 7);
-// board.render();
-// board.makeMove(player2, 6);
-// board.render();
-// board.checkWin();
+const GameView = function (board) {
+  const squares = document.querySelectorAll('[data-square]');
+  console.log(squares);
+  function update() {
+    for (var i = 0; i < squares.length; i++) {
+      squares[i].innerText = board[i];
+    }
+  }
+
+  return { update };
+};
 
 const GameController = function () {
   const board = Gameboard();
-  let gameOver = false;
+  const view = GameView(board);
 
-  const player1Name =
-    document.querySelector('.player-one-name').value === ''
-      ? 'Player 1 (X)'
-      : document.querySelector('.player-one-name').value;
-  const player2Name =
-    document.querySelector('.player-two-name').value === ''
-      ? 'Player 2 (O)'
-      : document.querySelector('.player-two-name').value;
+  let player1;
+  let player2;
+
+  let playerTurn;
+
+  const handleClick = (e) => {
+    const { square } = e.target.dataset;
+
+    board.makeMove(playerTurn, square);
+    if (board.checkWin(playerTurn.mark)) {
+      console.log(`${playerTurn.name} ${playerTurn.mark} wins`);
+    }
+    view.update();
+    changePlayer();
+  };
+
+  const changePlayer = function () {
+    if (playerTurn === player1) {
+      playerTurn = player2;
+    } else {
+      playerTurn = player1;
+    }
+  };
+
+  document.querySelector('[data-start-btn').addEventListener('click', () => {
+    start();
+  });
+  document.querySelector('.board').addEventListener('click', handleClick);
+
+  const player1Input = document.querySelector('.player-one-name');
+  const player2Input = document.querySelector('.player-two-name');
 
   function start() {
-    console.log(`Player 1: ${player1Name}`);
-    console.log(`Player 2: ${player2Name}`);
+    player1 = new Player(
+      player1Input.value === '' ? 'Player 1 (X)' : player1Input.value,
+      'X'
+    );
+    player1Input.value = player1.name;
+    player2 = new Player(
+      player2Input.value === '' ? 'Player 2 (O)' : player2Input.value,
+      'O'
+    );
+    player2Input.value = player2.name;
+    playerTurn = player1;
+    console.log(player1);
+    console.log(player2);
   }
 
   return {
@@ -146,5 +168,4 @@ const GameController = function () {
   };
 };
 
-// const game = GameController();
-// game.start();
+const game = GameController();
