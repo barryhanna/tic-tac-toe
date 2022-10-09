@@ -85,6 +85,10 @@ const Gameboard = function () {
     return false;
   }
 
+  function state() {
+    return board;
+  }
+
   function clear() {
     for (var i = 0; i < squares.length; i++) {
       board[i] = undefined;
@@ -96,15 +100,15 @@ const Gameboard = function () {
       console.log(`\t${board[i]}`);
     }
   }
-  return { clear, makeMove, checkWin, printBoard };
+  return { clear, makeMove, checkWin, printBoard, state };
 };
 
 const GameView = function (board) {
   const squares = document.querySelectorAll('[data-square]');
-  console.log(squares);
+
   function update() {
     for (var i = 0; i < squares.length; i++) {
-      squares[i].innerText = board[i];
+      squares[i].innerText = board.state()[i] ? board.state()[i] : '';
     }
   }
 
@@ -159,8 +163,6 @@ const GameController = function () {
     );
     player2Input.value = player2.name;
     playerTurn = player1;
-    console.log(player1);
-    console.log(player2);
   }
 
   return {
