@@ -117,10 +117,14 @@ button:hover {
 }
 
 .board > *:hover {
-  background-color: hsl(233, 75%, 80%);
+  background-color: hsl(328, 100%, 55%);
 }
 
 .message-panel {
   margin-top: 1rem;
   text-align: center;
+}
+
+button[data-reset-btn] {
+  display: none;
 }

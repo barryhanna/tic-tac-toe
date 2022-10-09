@@ -18,11 +18,9 @@ const Gameboard = function () {
 
   function makeMove(player, square) {
     if (board[square] === 'X' || board[square] === 'O') {
-      console.log('Square already taken');
       return;
     }
     board[parseInt(square)] = player.mark;
-    console.log(`${square} with ${player.mark}`);
   }
 
   function checkWin(mark) {
@@ -85,26 +83,34 @@ const Gameboard = function () {
     return false;
   }
 
+  function checkDraw() {
+    if (checkWin('X') || checkWin('O')) {
+      return false;
+    }
+    for (var i = 0; i < board.length; i++) {
+      if (board[i] === undefined) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   function state() {
     return board;
   }
 
   function clear() {
-    for (var i = 0; i < squares.length; i++) {
+    for (var i = 0; i < board.length; i++) {
       board[i] = undefined;
     }
   }
 
-  function printBoard() {
-    for (var i = 0; i < board.length; i++) {
-      console.log(`\t${board[i]}`);
-    }
-  }
-  return { clear, makeMove, checkWin, printBoard, state };
+  return { clear, makeMove, checkWin, checkDraw, state };
 };
 
 const GameView = function (board) {
   const squares = document.querySelectorAll('[data-square]');
+  const msgPanel = document.querySelector('.message-panel');
 
   function update() {
     for (var i = 0; i < squares.length; i++) {
@@ -112,7 +118,15 @@ const GameView = function (board) {
     }
   }
 
-  return { update };
+  function displayMessage(str) {
+    msgPanel.innerText = str;
+  }
+
+  function clearMessage() {
+    displayMessage('');
+  }
+
+  return { update, displayMessage, clearMessage };
 };
 
 const GameController = function () {
@@ -132,7 +146,10 @@ const GameController = function () {
 
     board.makeMove(playerTurn, square);
     if (board.checkWin(playerTurn.mark)) {
-      console.log(`${playerTurn.name} ${playerTurn.mark} wins`);
+      view.displayMessage(`${playerTurn.name} wins`);
+    }
+    if (board.checkDraw()) {
+      view.displayMessage(`Draw`);
     }
     view.update();
     changePlayer();
@@ -146,8 +163,25 @@ const GameController = function () {
     }
   };
 
-  document.querySelector('[data-start-btn').addEventListener('click', () => {
+  const reset = function () {
+    resetBtn.style.display = 'none';
+    startBtn.style.display = 'block';
+    view.clearMessage();
+    board.clear();
+    view.update();
+    player1Input.value = '';
+    player2Input.value = '';
+    playerTurn = null;
+  };
+
+  const startBtn = document.querySelector('[data-start-btn');
+  const resetBtn = document.querySelector('[data-reset-btn');
+
+  startBtn.addEventListener('click', () => {
     start();
+  });
+  resetBtn.addEventListener('click', () => {
+    reset();
   });
   document.querySelector('.board').addEventListener('click', handleClick);
 
@@ -166,11 +200,9 @@ const GameController = function () {
     );
     player2Input.value = player2.name;
     playerTurn = player1;
+    startBtn.style.display = 'none';
+    resetBtn.style.display = 'block';
   }
-
-  return {
-    start,
-  };
 };
 
 const game = GameController();
