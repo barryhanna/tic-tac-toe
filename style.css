@@ -65,7 +65,17 @@ select {
 }
 
 button {
+  --color: deeppink;
+  --offset-amount: 2px;
+  outline: var(--offset-amount) solid var(--color);
+  outline-offset: calc(var(--offset-amount) * -1);
+  border: var(--offset-amount) solid var(--color);
   cursor: pointer;
+  transition: outline-offset 250ms ease-in;
+}
+
+button:hover {
+  outline-offset: calc(var(--offset-amount) * -2);
 }
 
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
@@ -108,4 +118,9 @@ button {
 
 .board > *:hover {
   background-color: hsl(233, 75%, 80%);
+}
+
+.message-panel {
+  margin-top: 1rem;
+  text-align: center;
 }

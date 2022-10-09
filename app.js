@@ -125,6 +125,9 @@ const GameController = function () {
   let playerTurn;
 
   const handleClick = (e) => {
+    if (!playerTurn) {
+      return;
+    }
     const { square } = e.target.dataset;
 
     board.makeMove(playerTurn, square);
